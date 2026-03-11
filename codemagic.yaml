@@ -1,26 +1,26 @@
 workflows:
-  ios-workflow: # Indented 2 spaces
-    name: iOS Build
+  ios-workflow:
+    name: Muzik iOS Build
     environment:
       xcode: latest
-      groups:
-        - target_settings # Recommended for storing environment variables
     scripts:
       - name: Install CocoaPods
         script: |
-          cd src
+          # Eğer ana dizinde Podfile varsa direkt çalıştırırız
           pod install
-      - name: Build iOS (Build Only)
+      - name: Build iOS (Unsigned)
         script: |
-          cd src
-          xcodebuild -workspace imsakiye.xcworkspace \
-            -scheme imsakiye \
+          # Proje ismi 'muzik' olarak güncellendi
+          xcodebuild -workspace muzik.xcworkspace \
+            -scheme muzik \
             -configuration Release \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_ENTITLEMENTS="" \
+            GCC_GENERATE_DEBUGGING_SYMBOLS=NO \
             build
     artifacts:
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/Products/**/*.app
