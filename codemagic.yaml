@@ -1,24 +1,34 @@
 workflows:
   ios-workflow:
-    name: Muzik iOS Build
+    name: Muzik iOS IPA Build
     environment:
       xcode: latest
+      # Sertifikalarınızı Codemagic panelinde tanımladığınızda bu grup otomatik gelir
+      groups:
+        - apple_auth 
     scripts:
       - name: Install CocoaPods
         script: |
           cd src && pod install
-      - name: Build iOS (Unsigned)
+      - name: Build and Archive iOS
         script: |
-          cd src && xcodebuild -workspace muzik.xcworkspace \
+          cd src
+          # keychain'i otomatik kurmak için (Eğer Codemagic paneline sertifika yüklediyseniz)
+          keychain initialize
+          # Provisioning profile'ları indir
+          app-store-connect fetch-signing-files "com.your.bundle.id" --project-id "YOUR_APP_ID" --type IOS_APP_STORE --install
+          
+          # IPA oluşturma komutu
+          xcodebuild -workspace muzik.xcworkspace \
             -scheme muzik \
             -configuration Release \
-            -sdk iphoneos \
-            -destination 'generic/platform=iOS' \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGN_ENTITLEMENTS="" \
-            GCC_GENERATE_DEBUGGING_SYMBOLS=NO \
-            build
+            -archivePath $(pwd)/build/Muzik.xcarchive \
+            archive
+          
+          # Arşivi IPA'ya dönüştür
+          xcodebuild -exportArchive \
+            -archivePath $(pwd)/build/Muzik.xcarchive \
+            -exportOptionsPlist export_options.plist \
+            -exportPath $(pwd)/build
     artifacts:
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/Products/**/*.app
+      - src/build/*.ipa
