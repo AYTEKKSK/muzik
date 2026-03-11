@@ -2,7 +2,6 @@ workflows:
 ios-workflow:
 name: Muzik iOS IPA Build
 
-```
 environment:
   xcode: latest
 
@@ -37,4 +36,3 @@ scripts:
 
 artifacts:
   - src/build/ipa/*.ipa
-```
