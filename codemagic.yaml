@@ -1,6 +1,7 @@
 workflows:
   ios-workflow:
     name: Muzik iOS IPA Build
+
     environment:
       xcode: latest
 
@@ -10,18 +11,18 @@ workflows:
           cd src
           pod install
 
-      - name: Build iOS
+      - name: Build Archive
         script: |
           cd src
-          xcodebuild -workspace muzik.xcworkspace \
+          xcodebuild \
+          -workspace muzik.xcworkspace \
           -scheme muzik \
           -configuration Release \
+          -archivePath build/muzik.xcarchive \
           -sdk iphoneos \
           -destination 'generic/platform=iOS' \
           CODE_SIGNING_ALLOWED=NO \
-          CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGN_IDENTITY="" \
-          build
+          archive
 
     artifacts:
-      - src/build/**/*.ipa
+      - src/build/**/*.xcarchive
