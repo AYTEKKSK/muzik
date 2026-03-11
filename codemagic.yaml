@@ -1,34 +1,26 @@
-
-
 workflows:
-ios-workflow:
-
-
-
-
-name: iOS Build
-
-environment:
-  xcode: latest
-
-scripts:
-  - name: Install CocoaPods
-    script: |
-      cd src
-      pod install
-
-  - name: Build iOS
-    script: |
-      cd src
-      xcodebuild -workspace imsakiye.xcworkspace \
-        -scheme imsakiye \
-        -configuration Release \
-        -sdk iphoneos \
-        -destination 'generic/platform=iOS' \
-        CODE_SIGNING_ALLOWED=NO \
-        CODE_SIGNING_REQUIRED=NO \
-        CODE_SIGN_IDENTITY="" \
-        build
-
-artifacts:
-  - src/build/**/*.ipa
+  ios-workflow: # Indented 2 spaces
+    name: iOS Build
+    environment:
+      xcode: latest
+      groups:
+        - target_settings # Recommended for storing environment variables
+    scripts:
+      - name: Install CocoaPods
+        script: |
+          cd src
+          pod install
+      - name: Build iOS (Build Only)
+        script: |
+          cd src
+          xcodebuild -workspace imsakiye.xcworkspace \
+            -scheme imsakiye \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+    artifacts:
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/Products/**/*.app
