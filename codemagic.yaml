@@ -15,14 +15,14 @@ scripts:
     script: |
       cd src
       xcodebuild -workspace imsakiye.xcworkspace \
-      -scheme imsakiye \
-      -configuration Release \
-      -sdk iphoneos \
-      -destination 'generic/platform=iOS' \
-      CODE_SIGNING_ALLOWED=NO \
-      CODE_SIGNING_REQUIRED=NO \
-      CODE_SIGN_IDENTITY="" \
-      build
+        -scheme imsakiye \
+        -configuration Release \
+        -sdk iphoneos \
+        -destination 'generic/platform=iOS' \
+        CODE_SIGNING_ALLOWED=NO \
+        CODE_SIGNING_REQUIRED=NO \
+        CODE_SIGN_IDENTITY="" \
+        build
 
 artifacts:
   - src/build/**/*.ipa
