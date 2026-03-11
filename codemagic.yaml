@@ -11,7 +11,7 @@ scripts:
       cd src
       pod install
 
-  - name: Build iOS Archive (No Signing)
+  - name: Build iOS Archive
     script: |
       cd src
       xcodebuild \
