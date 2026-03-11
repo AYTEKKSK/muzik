@@ -6,12 +6,10 @@ workflows:
     scripts:
       - name: Install CocoaPods
         script: |
-          # Eğer ana dizinde Podfile varsa direkt çalıştırırız
-          pod install
+          cd src && pod install
       - name: Build iOS (Unsigned)
         script: |
-          # Proje ismi 'muzik' olarak güncellendi
-          xcodebuild -workspace muzik.xcworkspace \
+          cd src && xcodebuild -workspace muzik.xcworkspace \
             -scheme muzik \
             -configuration Release \
             -sdk iphoneos \
