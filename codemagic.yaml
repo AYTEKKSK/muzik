@@ -2,6 +2,7 @@ workflows:
 ios-workflow:
 name: iOS Build
 
+```
 environment:
   xcode: latest
 
@@ -23,4 +24,6 @@ scripts:
       CODE_SIGNING_REQUIRED=NO \
       CODE_SIGN_IDENTITY="" \
       build
-```
+
+artifacts:
+  - src/build/**/*.ipa
